@@ -1,0 +1,7 @@
+Scene 3 — The statement that connects them
+
+What you might not have seen written out is the statement that connects these two things, the binomial theorem:
+
+Read it from left to right. If you multiply out (a+b) to the n-th power, you get a sum over all combinations of powers of a and b, from a to the n down to b to the n, where the two exponents always add up to n. And each of these terms is multiplied by a coefficient, the number from Pascal's triangle.
+
+So the entries of Pascal's triangle are binomial coefficients. The row is n, and the position in the row, counted from zero at the left, is k.

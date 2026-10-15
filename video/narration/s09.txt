@@ -1,0 +1,9 @@
+Scene 9 — Counting by the last step
+
+Now we can finally see the rule. Pick a node, say a squared b in row three, and ask: one step earlier, where was each path that ends here?
+
+There are only two possibilities. Either the path was at a b, and its last step multiplied by a. Or it was at a squared, and its last step multiplied by b. There is no third way in, and no path can come in both ways. So the number of paths into a squared b is the number of paths into a b plus the number of paths into a squared. Two plus one, three.
+
+This works for every node. Here is the six in row four, the term a squared b squared. Its paths come either from a squared b, ending with a b, three of them, or from a b squared, ending with an a, also three. Three plus three is six.
+
+That is the rule of Pascal's triangle. Each entry is the sum of the two above it, because every path to a node arrives through exactly one of the two nodes above it.

@@ -1,0 +1,11 @@
+Scene 6 — A coefficient counts choices
+
+So a coefficient counts how many ways there are to arrive at a term by choosing one letter from each bracket.
+
+Look at a squared b. Its coefficient is three, because there are three ways to make it. Exactly one bracket has to give its b, and then the other two give a. So the only real decision is which of the three brackets supplies the b. That is choosing one bracket out of three, three choose one, which is three.
+
+The same works for every term. For a b squared, we choose which two of the three brackets supply a b. That gives three choose two, which is again three. In general, the coefficient of a to the n minus k, b to the k, is the number of ways to choose which k of the n brackets supply a b. That is n choose k. This is the binomial theorem, and it is the first half of our answer.
+
+Notice also that choosing the brackets for the b's automatically decides the brackets for the a's: they are the remaining ones. So three choose one equals three choose two, and in general n choose k equals n choose n minus k. This is why Pascal's triangle is symmetric.
+
+But this still does not explain the rule that builds the triangle. Why is each entry the sum of the two entries above it?

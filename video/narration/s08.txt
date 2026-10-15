@@ -1,0 +1,9 @@
+Scene 8 — Folding the tree into the triangle
+
+Now one change. Instead of writing only the letter we just picked into each node, let's write the product so far: everything multiplied along the path from the top down to that node.
+
+Some nodes in the same row now hold the same product. In row two, a b appears twice: once as a then b, once as b then a. Two nodes with the same product have the same future: whatever we multiply next, they produce the same terms. So we can merge them into one node, as long as we remember how many paths arrive there.
+
+What is left is a triangle. Each node is a term, a to the n minus k, b to the k, and the number in it counts the paths from the top that reach it. One. One, one. One, two, one. One, three, three, one. This is Pascal's triangle.
+
+So an entry of Pascal's triangle counts paths. A path to a to the n minus k, b to the k, is a sequence of n steps, k of them to the right, multiplying by b, and the rest to the left, multiplying by a. Choosing which k steps go right is choosing k out of n. That is n choose k, the same count as before.

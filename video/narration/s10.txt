@@ -1,0 +1,11 @@
+Scene 10 — Two ways to count the same paths
+
+Now put the two halves together. We have counted the paths to the same node in two different ways.
+
+Counting the steps: a path to a to the n minus k, b to the k, is a choice of which k of its n steps are b-steps. That gives n choose k paths.
+
+Counting by the last step: the paths that end with a b-step come from the node with k minus one b's in the row above, and the paths that end with an a-step come from the node with k b's in the row above.
+
+Both counts describe the same set of paths, so they must be equal: n choose k equals n minus one choose k minus one, plus n minus one choose k.
+
+In the language of brackets: to choose which k of the n brackets give a b, look at the last bracket. If it gives b, you still have to choose k minus one b's from the first n minus one brackets. If it gives a, you have to choose all k b's from the first n minus one brackets. Every choice falls into exactly one of these two cases.

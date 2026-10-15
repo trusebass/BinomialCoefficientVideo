@@ -1,0 +1,9 @@
+Scene 2 — Choosing
+
+Somewhere else, maybe in a probability class, you met this symbol: n choose k. It counts the ways to choose k elements from a set of n elements, when the order of the chosen elements does not matter.
+
+Take the Swiss lottery. Six numbers are drawn from the numbers 1 to 42. If the order of the draw mattered, there would be 42 possibilities for the first number, 41 for the second, and so on down to 37 for the sixth. That is 42 factorial divided by 36 factorial, almost 3.8 billion ordered draws.
+
+But to win, you only need the right six numbers, in any order. Each set of six numbers can be ordered in 6 factorial, that is 720, ways, and all 720 orders are the same ticket. So we divide by 6 factorial: 5,245,786 different results.
+
+This expression has a name. With n elements and k chosen, it is n factorial divided by (n minus k) factorial and k factorial, the binomial coefficient, written like this and read "n choose k".

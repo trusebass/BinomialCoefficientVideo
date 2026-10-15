@@ -1,0 +1,5 @@
+Scene 11 — The triangle builds itself
+
+So adding and choosing are the same thing, seen from two directions. Start with one path at the top. Let every node send its paths down both of its edges, and let every node add up what arrives.
+
+The table you learned in school was never only a lookup table. Each number counts paths through a tree of choices: the ways to choose which k of n brackets give a b. And adding the two numbers above is nothing more than sorting those choices by what happened in the last bracket.

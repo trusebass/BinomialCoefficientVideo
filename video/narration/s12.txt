@@ -1,0 +1,3 @@
+Scene 12 — Coda, optional
+
+One last picture. Replace every node with a peg and drop balls from the top. At each peg a ball bounces left or right with equal chance. A ball that lands in slot k bounced right k times out of n, and there are n choose k such paths, each with probability one over 2 to the n. So the pile in slot k grows in proportion to n choose k. This is the binomial distribution, built by gravity, and it is where this triangle leads next: statistics, error-correcting codes, option pricing. But that is another video.

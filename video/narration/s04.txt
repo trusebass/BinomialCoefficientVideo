@@ -1,0 +1,3 @@
+Scene 4 — The question
+
+My question is: why? The numbers in this triangle come from a simple rule, each one is the sum of the two above it. Why should the same numbers count the ways to choose k things out of n? What does lottery counting have to do with multiplying out brackets?

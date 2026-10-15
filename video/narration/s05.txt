@@ -1,0 +1,7 @@
+Scene 5 — Multiplying out, one pick per bracket
+
+To answer this, let's slow down and look at what multiplying out actually does. Take n equals three: (a+b) times (a+b) times (a+b). To multiply this out, you pick one term from each bracket, either its a or its b, and multiply your three picks. You do this for every possible combination of picks, and add up all the results.
+
+There are two choices in each of the three brackets, so two times two times two, eight combinations.
+
+Now we collect like terms. a cubed appears once, a squared b three times, a b squared three times, b cubed once. One, three, three, one: row three of the triangle.

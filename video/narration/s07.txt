@@ -1,0 +1,5 @@
+Scene 7 — The decision tree
+
+To see that, we draw the same multiplication as a tree of decisions. We start at the top with one, because (a+b) to the zero is one: nothing has been multiplied yet. Every bracket we multiply by adds one level to the tree: at each node we either multiply by the bracket's a, going left, or by its b, going right.
+
+A path from the top down to the bottom is one way to pick a letter from each bracket, and the product along the path is one term of the expansion. Every new bracket doubles the number of paths, so before collecting like terms there are 2 to the n of them.

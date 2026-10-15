@@ -1,0 +1,5 @@
+Scene 1 — The lookup table
+
+Like me, you probably met this triangle in school, when you first learned algebra. It was handed to you as a tool: to multiply out a binomial like (a+b) raised to some power, you find the matching row and read off the coefficients.
+
+Each number is the sum of the two numbers above it, so the table is easy to extend. And that is usually where the story ends.
