@@ -70,8 +70,8 @@ def end_state():
     tri = triangle()
     left, _ = left_side(4)
     pair = focus_box(VGroup(tri.cell(3, 1), tri.cell(3, 2)))
-    arrows, plus = tri.rule_arrows(4, 2)
-    return VGroup(tri, left, pair, arrows, plus)
+    plus = tri.rule_plus(4, 2)
+    return VGroup(tri, left, pair, plus)
 
 
 class S01Lookup(BeatScene):
@@ -121,10 +121,8 @@ class S01Lookup(BeatScene):
         pair = focus_box(VGroup(tri.cell(3, 1), tri.cell(3, 2)))
         self.beat("outline the two 3s in row 3",
                   FadeOut(box), FadeOut(label), Create(pair))
-        arrows, plus = tri.rule_arrows(4, 2)
-        self.beat("arrows from the 3s into the 6, plus sign",
-                  LaggedStart(*[GrowArrow(a) for a in arrows], lag_ratio=0.3),
-                  FadeIn(plus))
+        plus = tri.rule_plus(4, 2)
+        self.beat("plus sign between the 3s", FadeIn(plus, scale=0.6))
         six = tri.cell(4, 2)
         six.set_z_index(1)
         self.beat("the 6 pulses", pulse(six))

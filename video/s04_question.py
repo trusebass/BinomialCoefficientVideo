@@ -46,15 +46,14 @@ class S04Question(BeatScene):
         marks = None
         for n, k in RULE_CELLS:
             box = focus_box(VGroup(tri.cell(n - 1, k - 1), tri.cell(n - 1, k)))
-            arrows, plus = tri.rule_arrows(n, k)
-            new = VGroup(box, arrows, plus)
+            plus = tri.rule_plus(n, k)
+            new = VGroup(box, plus)
             child = tri.cell(n, k)
             child.set_z_index(1)
             a, b = tri.cell(n - 1, k - 1).value, tri.cell(n - 1, k).value
             self.beat(f"rule: {a} + {b} = {child.value} at row {n}", Succession(
                 AnimationGroup(*([FadeOut(marks)] if marks else []), Create(box),
-                               GrowArrow(arrows[0]), GrowArrow(arrows[1]),
-                               FadeIn(plus), run_time=0.7),
+                               FadeIn(plus, scale=0.6), run_time=0.7),
                 pulse(child)))
             marks = new
 

@@ -346,28 +346,13 @@ class PascalTriangle(VGroup):
             mono(f"k={k}", 16 * self.k, MUTED).next_to(c, DOWN, buff=buff * self.k)
             for k, c in enumerate(self.cells[self.rows])])
 
-    def rule_arrows(self, n, k):
-        """Arrows from (n-1, k-1) and (n-1, k) into (n, k), and a '+'
-        between the two parents so the row reads "3 + 3".
-
-        The gap between rows is tiny, so the arrows run from just under each
-        parent's number to just above the child's, over the cells, with a BG
-        halo for contrast.
-        """
-        a, b, c = self.cell(n - 1, k - 1), self.cell(n - 1, k), self.cell(n, k)
-        h = c.box.height
-        arrows = VGroup()
-        for p in (a, b):
-            start = p.get_center() + DOWN * h * 0.27 + (c.get_x() - p.get_x()) * 0.2 * RIGHT
-            end = c.get_center() + UP * h * 0.30 + (p.get_x() - c.get_x()) * 0.28 * RIGHT
-            ar = Arrow(start, end, buff=0, color=INK, stroke_width=3,
-                       max_tip_length_to_length_ratio=0.5, tip_length=0.075 * self.k,
-                       max_stroke_width_to_length_ratio=20)
-            arrows.add(halo(ar, 6).set_z_index(2))
+    def rule_plus(self, n, k):
+        """A '+' between (n-1, k-1) and (n-1, k), so the row reads "3 + 3"
+        above the cell (n, k) they add up to. BG halo for contrast."""
+        a, b = self.cell(n - 1, k - 1), self.cell(n - 1, k)
         plus = MathTex("+", font_size=22 * self.k, color=INK)
         plus.move_to((a.get_center() + b.get_center()) / 2)
-        halo(plus, 6).set_z_index(2)
-        return arrows, plus
+        return halo(plus, 6).set_z_index(2)
 
 
 # ---------------------------------------------------------------- brackets (B.5)

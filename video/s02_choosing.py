@@ -66,14 +66,19 @@ class S02Choosing(BeatScene):
         prev = s01_lookup.end_state()
         self.add(prev)
 
+        symbol = ab_tex(r"\binom{n}{k}", font_size=170)
+        self.beat("the symbol n choose k, big in the middle",
+                  FadeOut(prev, run_time=T_FADE), FadeIn(symbol, scale=0.85))
+        corner = ab_tex(r"\binom{n}{k}", font_size=40).to_corner(UP + LEFT, buff=SAFE).shift(RIGHT * 0.7)
+
         balls = grid()
         slots = VGroup(*[DashedVMobject(Circle(radius=BALL_R + 0.04, color=MUTED,
                                                stroke_width=1.5), num_dashes=16)
                          .move_to(slot_pos(i)) for i in range(6)])
         ordinals = VGroup(*[mono(o, 20, MUTED).next_to(s, UP, buff=0.2)
                             for o, s in zip(ORDINALS, slots)])
-        self.beat("42 balls and six empty slots",
-                  FadeOut(prev, run_time=T_FADE),
+        self.beat("symbol to the corner; 42 balls and six empty slots",
+                  symbol.animate.become(corner),
                   LaggedStart(*[FadeIn(b, scale=0.8) for b in balls],
                               lag_ratio=0.03, run_time=1.2),
                   FadeIn(slots), FadeIn(ordinals))
@@ -148,7 +153,8 @@ class S02Choosing(BeatScene):
                      (frac2[2][0], f[2][0]), (frac2[2][1], f[2][1]),
                      (frac2[2][2], f[2][2]), (frac2[2][3], f[2][3]), (eq2, eq3)]],
                   FadeOut(res), run_time=T_MORPH)
-        self.beat("= binom(n, k)", Write(binom, run_time=0.8))
+        self.beat("= binom(n, k): the symbol from the corner",
+                  ReplacementTransform(symbol, binom, run_time=T_MORPH))
         t, line = choose_label(gen)
         self.beat("n choose k", FadeIn(t, shift=UP * 0.15))
         self.beat("underline 'choose'", Create(line))

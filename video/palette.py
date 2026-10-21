@@ -13,9 +13,9 @@ INK2 = ManimColor("#B7BCC8")          # secondary text, tree edges
 MUTED = ManimColor("#8A90A0")         # labels, axes, dimmed context
 RULE = ManimColor("#2A2F39")          # lines at rest, outlines
 A_BLUE = ManimColor("#3987E5")        # every letter a, every ×a edge
-B_ORANGE = ManimColor("#D95926")      # every letter b, every ×b edge
-PATH_AQUA = ManimColor("#199E70")     # traced paths only
-FOCUS_YELLOW = ManimColor("#C98500")  # the one thing in focus
+B_ORANGE = ManimColor("#E93648")      # every letter b, every ×b edge
+PATH_AQUA = ManimColor("#F3919B")     # traced paths only
+FOCUS_YELLOW = ManimColor("#F9C8CD")  # the one thing in focus
 CELL_LO = ManimColor("#1B2433")       # Pascal cell fill at t = 0
 CELL_HI = ManimColor("#6DA7EC")       # Pascal cell fill at t = 1
 

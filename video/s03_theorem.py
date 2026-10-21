@@ -20,7 +20,14 @@ def theorem_corner():
 def cell_binom(cell, n, k):
     """A small binom(n, k) that fits inside a cell, in the cell's text color."""
     b = ab_tex(rf"\binom{{{n}}}{{{k}}}", color=cell.label.get_fill_color())
-    return b.scale_to_fit_height(cell.box.height * 0.8).move_to(cell.box)
+    return b.scale_to_fit_height(cell.box.height * 0.84).move_to(cell.box)
+
+
+def swap(old, new, run_time=0.5):
+    """Fade `old` out completely, then fade `new` in: the two never overlap.
+    (FadeTransform would stretch one into the other and show both at once.)"""
+    return Succession(FadeOut(old, scale=0.85, run_time=run_time / 2),
+                      FadeIn(new, scale=0.85, run_time=run_time / 2))
 
 
 def end_state():
@@ -80,10 +87,11 @@ class S03Theorem(BeatScene):
         # Rows 0-4: every number cross-fades to binom(n, k), then back.
         cells = [(n, k) for n in range(5) for k in range(n + 1)]
         binoms = {nk: cell_binom(tri.cell(*nk), *nk) for nk in cells}
-        self.beat("cells show binom(n, k)", LaggedStart(
-            *[FadeTransform(tri.cell(*nk).label, binoms[nk]) for nk in cells],
-            lag_ratio=0.08, run_time=0.8 * 2.5))
-        labels = {nk: tri.cell(*nk).label.copy() for nk in cells}
-        self.beat("cells back to numbers", LaggedStart(
-            *[FadeTransform(binoms[nk], labels[nk]) for nk in cells],
-            lag_ratio=0.08, run_time=0.8 * 2.5))
+        labels = {nk: tri.cell(*nk).label for nk in cells}
+        # One LaggedStart entry per row: the swap sweeps down the triangle.
+        rows = lambda a, b: [AnimationGroup(*[swap(a[n, k], b[n, k]) for k in range(n + 1)])
+                             for n in range(5)]
+        self.beat("cells show binom(n, k)", LaggedStart(*rows(labels, binoms),
+                                                        lag_ratio=0.35, run_time=1.6))
+        self.beat("cells back to numbers", LaggedStart(*rows(binoms, labels),
+                                                       lag_ratio=0.35, run_time=1.6))
