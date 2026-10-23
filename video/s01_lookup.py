@@ -65,13 +65,22 @@ def row_label(tri, n):
     return mono(f"n = {n}", 22 * tri.k, MUTED).next_to(tri.row(n), LEFT, buff=0.3)
 
 
+def reading_notes(tri, n, terms):
+    """Row n's numbers, small and MUTED, each under its term of the expansion."""
+    notes = VGroup(*[mono(str(tri.cell(n, k).value), 22, MUTED).next_to(t, DOWN, buff=0.18)
+                     for k, t in enumerate(terms)])
+    return notes.set_y(min(nt.get_y() for nt in notes))
+
+
+LAST_N = 3   # the scene ends once row 3 has been read off
+
+
 def end_state():
     """Everything on screen when Scene 1 ends (Scene 2 starts from it)."""
     tri = triangle()
-    left, _ = left_side(4)
-    pair = focus_box(VGroup(tri.cell(3, 1), tri.cell(3, 2)))
-    plus = tri.rule_plus(4, 2)
-    return VGroup(tri, left, pair, plus)
+    left, terms = left_side(LAST_N)
+    return VGroup(tri, left, row_label(tri, LAST_N), focus_box(tri.row(LAST_N)),
+                  reading_notes(tri, LAST_N, terms))
 
 
 class S01Lookup(BeatScene):
@@ -90,7 +99,7 @@ class S01Lookup(BeatScene):
         self.beat("(a+b)^n on the left", Write(left, run_time=T_WRITE))
 
         label = box = notes = None
-        for n in range(5):
+        for n in range(LAST_N + 1):
             new_left, terms = left_side(n)
             new_label = row_label(tri, n)
             new_box = focus_box(tri.row(n))
@@ -109,20 +118,7 @@ class S01Lookup(BeatScene):
             if n in (2, 3):
                 # Reading off: each number flies from its cell to sit under
                 # its term, including the 1s that are never written.
-                notes = VGroup(*[
-                    mono(str(tri.cell(n, k).value), 22, MUTED).next_to(t, DOWN, buff=0.18)
-                    for k, t in enumerate(terms)])
-                notes.set_y(min(nt.get_y() for nt in notes))
+                notes = reading_notes(tri, n, terms)
                 self.beat(f"n = {n}: coefficients read off the row", LaggedStart(
                     *[TransformFromCopy(tri.cell(n, k).label, nt)
                       for k, nt in enumerate(notes)], lag_ratio=LAG, run_time=1.0))
-
-        # The addition rule, shown once: 3 + 3 -> 6.
-        pair = focus_box(VGroup(tri.cell(3, 1), tri.cell(3, 2)))
-        self.beat("outline the two 3s in row 3",
-                  FadeOut(box), FadeOut(label), Create(pair))
-        plus = tri.rule_plus(4, 2)
-        self.beat("plus sign between the 3s", FadeIn(plus, scale=0.6))
-        six = tri.cell(4, 2)
-        six.set_z_index(1)
-        self.beat("the 6 pulses", pulse(six))

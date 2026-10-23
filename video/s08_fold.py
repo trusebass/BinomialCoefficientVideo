@@ -75,11 +75,11 @@ class S08Fold(BeatScene):
                 e.put_start_and_end_on(a, b)
             return upd
 
-        def move_nodes(targets, desc):
+        def move_nodes(targets, desc, extra=()):
             for w, e in edges.items():
                 e.add_updater(follow(w))
             self.beat(desc, *[nodes[w].animate.move_to(p) for w, p in targets.items()],
-                      run_time=1.4)
+                      *extra, run_time=1.4)
             for e in edges.values():   # nothing may move during the hold
                 e.clear_updaters()
 
@@ -114,7 +114,12 @@ class S08Fold(BeatScene):
                 targets[w] = lat.pos(*kb(w))
             else:
                 targets[w] = lat.pos(*kb(w[:2])) + (tree.pos(w) - tree.pos(w[:2]))
-        move_nodes(targets, "rows 0-2 fold; ab and ba slide together, subtrees overlap")
+        # The two nodes with the same product, outlined one after the other.
+        same = VGroup(focus_box(nodes["ab"], buff=0.08), focus_box(nodes["ba"], buff=0.08))
+        self.beat("outline the first ab (a then b)", Create(same[0]))
+        self.beat("outline the second ab (b then a)", Create(same[1]))
+        move_nodes(targets, "rows 0-2 fold; ab and ba slide together, subtrees overlap",
+                   extra=[FadeOut(same, run_time=0.4)])
         self.beat("badges: 1 | 1 1 | 1 2 1 (two paths reach ab)",
                   LaggedStart(*sum([merge_row(n) for n in range(3)], []), lag_ratio=0.1))
 

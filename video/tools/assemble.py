@@ -42,32 +42,39 @@ def stamp(t):
     return f"{int(m):02d}:{s:06.3f}"
 
 
-def main(q="h"):
-    out = ROOT / "out"
-    clips = out / "clips"
-    clips.mkdir(parents=True, exist_ok=True)
+def scene_video(module, cls, q):
+    return ROOT / "media" / "videos" / module / QUALITY_DIRS[q] / f"{cls}.mp4"
+
+
+def build(q, full, csv_path, clips=None, verbose=True):
+    """Join all scenes into `full` and write the beat list to `csv_path`.
+    With `clips` (a folder), also copy every scene's clip there."""
+    full, csv_path = Path(full), Path(csv_path)
+    if clips:
+        Path(clips).mkdir(parents=True, exist_ok=True)
     rows, offset, lines = [], 0.0, []
     for sid, module, cls in SCENES:
-        video = ROOT / "media" / "videos" / module / QUALITY_DIRS[q] / f"{cls}.mp4"
+        video = scene_video(module, cls, q)
         bs, length = beats(sid, video)
         for i, b in enumerate(bs, 1):
             rows.append([sid, i, stamp(offset + b["start"]), b["desc"],
                          stamp(offset + b["freeze"])])
-        clip = clips / f"{sid}.mp4"
-        shutil.copyfile(video, clip)
-        lines.append(f"file '{clip}'")
-        print(f"{sid}  starts {stamp(offset)}  length {length:7.3f}s  {len(bs)} beats")
+        if clips:
+            shutil.copyfile(video, Path(clips) / f"{sid}.mp4")
+        lines.append(f"file '{video}'")
+        if verbose:
+            print(f"{sid}  starts {stamp(offset)}  length {length:7.3f}s  {len(bs)} beats")
         offset += length
 
-    lst = out / "concat.txt"
+    lst = full.with_suffix(".concat.txt")
     lst.write_text("\n".join(lines) + "\n")
-    full = out / "binomial_full.mp4"
     # -c copy joins the files without re-encoding: no quality loss, no gaps,
     # and it works because every clip was rendered with the same settings.
     subprocess.run(["ffmpeg", "-v", "error", "-y", "-f", "concat", "-safe", "0",
                     "-i", str(lst), "-c", "copy", str(full)], check=True)
+    lst.unlink()
 
-    with open(out / "beats.csv", "w", newline="") as f:
+    with open(csv_path, "w", newline="") as f:
         w = csv.writer(f)
         w.writerow(["scene", "beat_number", "start_time_in_full_video", "description",
                     "freeze_from"])
@@ -77,10 +84,16 @@ def main(q="h"):
         s = c.streams.video[0]
         frames, fps = s.frames, float(s.average_rate)
     got = frames / fps
-    print(f"\n{full}: {stamp(got)} ({frames} frames)  expected {stamp(offset)}")
+    print(f"{full}: {stamp(got)} ({frames} frames)  expected {stamp(offset)}")
     if abs(got - offset) > 1 / fps:
         sys.exit("length mismatch: beat times would drift")
-    print(f"{out / 'beats.csv'}: {len(rows)} beats")
+    print(f"{csv_path}: {len(rows)} beats")
+
+
+def main(q="h"):
+    out = ROOT / "out"
+    out.mkdir(exist_ok=True)
+    build(q, out / "binomial_full.mp4", out / "beats.csv", clips=out / "clips")
 
 
 if __name__ == "__main__":

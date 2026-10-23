@@ -46,9 +46,23 @@ class S03Theorem(BeatScene):
 
         t = theorem()
         binom = part(t, r"\binom{n}{k}")
-        rest = VGroup(*[p for p in t if p is not binom])
-        self.beat("C(n,k) moves into the binomial theorem",
+        power = part(t, "(a+b)^n")
+        rest = VGroup(*[p for p in t if p is not binom and p is not power])
+
+        # The two things to connect, side by side: (a+b)^n mirrors C(n,k),
+        # which stays exactly where Scene 2 left it.
+        lone_power = ab_tex("(a+b)^n", font_size=56)
+        lone_power.move_to([-old_binom.get_x(), old_binom.get_y(), 0])
+        self.beat("(a+b)^n on the left, C(n,k) stays on the right",
                   FadeOut(VGroup(prev[0][0], prev[0][1], prev[1], prev[2])),
+                  FadeIn(lone_power, shift=RIGHT * 0.2))
+        box = focus_box(lone_power, buff=0.12)
+        self.beat("outline (a+b)^n", Create(box))
+        box_b = focus_box(old_binom, buff=0.12)
+        self.beat("outline moves to C(n,k)", ReplacementTransform(box, box_b))
+        self.beat("the binomial theorem bridges them",
+                  FadeOut(box_b, run_time=0.4),
+                  ReplacementTransform(lone_power, power, run_time=T_MORPH),
                   ReplacementTransform(old_binom, binom, run_time=T_MORPH),
                   FadeIn(rest, lag_ratio=0.1, run_time=T_MORPH))
 

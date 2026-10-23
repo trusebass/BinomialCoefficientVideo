@@ -81,6 +81,13 @@ class S10TwoWays(BeatScene):
         prev, lat = s09_last_step.end_state()
         self.add(prev)
 
+        # Every b-step in the lattice: x b edges bold, x a edges pushed back.
+        b_edges = [e for (n, k, st), e in lat.edges.items() if st == "b"]
+        a_edges = [e for (n, k, st), e in lat.edges.items() if st == "a"]
+        self.beat("highlight every b-step (x b edge) in the lattice",
+                  *[e.animate.set_stroke(width=6, opacity=1) for e in b_edges],
+                  *[e.animate.set_stroke(opacity=0.15) for e in a_edges])
+
         d = diagram()
         child, left, right, eb, ea, lb, la = d
         keep = {id(m) for m in (lat.cells[4, 2], lat.cells[3, 1], lat.cells[3, 2],
@@ -97,8 +104,17 @@ class S10TwoWays(BeatScene):
                   ReplacementTransform(lat.edges[3, 2, "a"], ea),
                   FadeIn(lb), FadeIn(la), run_time=T_MORPH)
 
+        # The three binomials, one after the other as the narration names them.
+        box = focus_box(child)
+        self.beat("outline binom(n,k)", Create(box))
+        for cell, name in ((left, "binom(n-1,k-1), top left"), (right, "binom(n-1,k), top right")):
+            new = focus_box(cell)
+            self.beat(f"outline {name}", ReplacementTransform(box, new))
+            box = new
+
         eq = equation()
-        self.beat("binom(n,k) = binom(n-1,k-1) + binom(n-1,k)", Write(eq, run_time=T_WRITE))
+        self.beat("binom(n,k) = binom(n-1,k-1) + binom(n-1,k)",
+                  FadeOut(box, run_time=0.4), Write(eq, run_time=T_WRITE))
         nb = last_step_note(eq[2], "b", B_ORANGE)
         self.beat("underline: last step x b", Create(nb[0]), FadeIn(nb[1], shift=UP * 0.1))
         na = last_step_note(eq[4], "a", A_BLUE)

@@ -5,6 +5,10 @@
 #   ./render.sh l        quick drafts:  480p15  (-ql)
 #   ./render.sh h S08    re-render one scene, then re-assemble
 #
+# Every run also writes a new folder exports/<date>_<time>_<quality>/ with the
+# rendered scene(s) and a full video under unique names. Import into Premiere
+# ONLY from exports/: media/videos/ and out/ are overwritten by every render.
+#
 # Manim caches every animation it has rendered before, so re-running after
 # changing one scene only re-renders the animations that changed.
 set -euo pipefail
@@ -38,3 +42,6 @@ for entry in "${SCENES[@]}"; do
 done
 
 .venv/bin/python tools/assemble.py "$Q"
+
+# A write-once copy for Premiere: import from exports/, never from media/ or out/.
+.venv/bin/python tools/export.py "$Q" "${ONLY:-all}"

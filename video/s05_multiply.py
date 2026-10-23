@@ -117,18 +117,17 @@ class S05Multiply(BeatScene):
                      for i in range(3)]
                     + [fly(w, 2 * rt), simplify(w, 2 * rt), to_tally(j, w, 2 * rt)])
 
-        # Picks 1-2: every step is its own beat.
+        # Pick 1: every step is its own beat.
         names = ["pick bracket 1", "pick bracket 2", "pick bracket 3",
                  "copies fly right of =", "multiply into one term", "term joins the tally"]
-        for j in range(2):
-            for name, step in zip(names, pick_steps(j, PICKS[j], 0.4)):
-                self.beat(f"{PICKS[j]}: {name}", steps=[step])
-        # Picks 3-5: one beat per pick.
-        for j in range(2, 5):
-            self.beat(f"{PICKS[j]}: whole pick", steps=pick_steps(j, PICKS[j], 0.22))
-        # Picks 6-8: one quick beat for all three.
-        self.beat("bab, bba, bbb: quick", steps=sum(
-            [pick_steps(j, PICKS[j], 0.12) for j in range(5, 8)], []))
+        for name, step in zip(names, pick_steps(0, PICKS[0], 0.4)):
+            self.beat(f"{PICKS[0]}: {name}", steps=[step])
+        # Picks 2-4: one beat per pick.
+        for j in range(1, 4):
+            self.beat(f"{PICKS[j]}: whole pick", steps=pick_steps(j, PICKS[j], 0.18))
+        # Picks 5-8: one quick beat for all four.
+        self.beat("baa, bab, bba, bbb: quick", steps=sum(
+            [pick_steps(j, PICKS[j], 0.10) for j in range(4, 8)], []))
 
         counter = mono("2 · 2 · 2 = 8 terms", 24, INK)
         counter.to_edge(RIGHT, buff=SAFE).set_y(3.15)
